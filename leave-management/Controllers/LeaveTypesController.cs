@@ -33,7 +33,15 @@ namespace leave_management.Controllers
         // GET: LeaveTypesController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (!_repo.isExists(id))
+            {
+                return NotFound();
+            }
+
+            var leaveType = _repo.FindById(id);
+            var model = _mapper.Map<LeaveTypeVM>(leaveType);
+
+            return View(model);
         }
 
         // GET: LeaveTypesController/Create
@@ -82,8 +90,13 @@ namespace leave_management.Controllers
         // GET: LeaveTypesController/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!_repo.isExists(id))
+            {
+                return NotFound();
+            }
+            
             var leaveType = _repo.FindById(id);
-            var model = _mapper.Map<LeaveType, LeaveTypeVM> (leaveType);
+            var model = _mapper.Map<LeaveTypeVM> (leaveType);
             
             return View(model);
         }
@@ -102,9 +115,6 @@ namespace leave_management.Controllers
 
                 //Map the model after LeaveType and save to a variable
                 var leaveType = _mapper.Map<LeaveType>(model);
-
-                //Model doesn't retain info passed into view when submitting
-                //leaveType.DateCreated = DateTime.Now;
 
                 //Call the repository operation to update
                 var isSuccess = _repo.Update(leaveType);

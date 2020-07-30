@@ -6,7 +6,6 @@
 
 <h1>Edit</h1>
 
-<h4>LeaveTypeVM</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,10 +18,10 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group" style="display:none;">
-                <input style="display:none;" asp-for="DateCreated" class="form-control" value="@Model.DateCreated" />
+                <input type="hidden" asp-for="DateCreated" class="form-control" value="@Model.DateCreated" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                <input type="submit" value="Save" class="btn btn-success btn-block" />
             </div>
         </form>
     </div>
