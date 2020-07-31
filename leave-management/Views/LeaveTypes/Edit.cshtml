@@ -21,14 +21,11 @@
                 <input type="hidden" asp-for="DateCreated" class="form-control" value="@Model.DateCreated" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success btn-block" />
+                <input type="submit" value="Save Changes" class="btn btn-success" />
+                <a asp-action="Index" id="backToList">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
