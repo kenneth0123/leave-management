@@ -32,9 +32,10 @@ namespace leave_management.Controllers
         }
 
         // GET: LeaveAllocationController
-        public ActionResult Index(int num, int leaveId)
+        public async Task<ActionResult> Index(int num, int leaveId)
         {
-            var leavetypes = _leaverepo.FindAll().ToList();
+            var leavetypestemp = await _leaverepo.FindAll();
+            var leavetypes = leavetypestemp.ToList();
             var mappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leavetypes);
 
             var model = new CreateLeaveAllocationVM
@@ -46,9 +47,9 @@ namespace leave_management.Controllers
             return View(model);
         }
 
-        public ActionResult SetLeave(int id)
+        public async Task<ActionResult> SetLeave(int id)
         {
-            var leaveType = _leaverepo.FindById(id);
+            var leaveType = await _leaverepo.FindById(id);
 
             var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
 
@@ -56,7 +57,8 @@ namespace leave_management.Controllers
 
             foreach (var emp in employees)
             {
-                if (_leaveallocationrepo.CheckAllocation(id, emp.Id))
+                var checkAlloc = await _leaveallocationrepo.CheckAllocation(id, emp.Id);
+                if (checkAlloc)
                     continue;
                 var allocation = new LeaveAllocationVM
                 {
@@ -67,7 +69,7 @@ namespace leave_management.Controllers
                     Period = DateTime.Now.Year
                 };
                 var leaveallocation = _mapper.Map<LeaveAllocation>(allocation);
-                _leaveallocationrepo.Create(leaveallocation);
+                await _leaveallocationrepo.Create(leaveallocation);
                 numOfEmployeesUpdated++;
 
                 
