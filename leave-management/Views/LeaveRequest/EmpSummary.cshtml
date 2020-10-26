@@ -9,7 +9,7 @@
     <ul class="list-group">
         @foreach (LeaveAllocationVM allocation in Model.LeaveAllocations)
         {
-            <li class="list-group-item">
+            <li class="list-group-item list-group-item-info">
                 <p>@allocation.LeaveType.Name <span class="badge badge-secondary">@allocation.NumberOfDays</span></p>
             </li>
         }
